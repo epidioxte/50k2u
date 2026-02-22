@@ -1,0 +1,2424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>50k2 — Give $2. Change Everything.</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --warm-bg: #FAF7F2;
+    --warm-bg-deep: #F3EDE4;
+    --ink: #1A1714;
+    --ink-soft: #6B6560;
+    --ink-muted: #A8A19A;
+    --accent: #E86B4A;
+    --accent-glow: #FF8566;
+    --accent-soft: #FFF0EC;
+    --green: #3AAF6B;
+    --green-soft: #E8F7EE;
+    --gold: #D4A843;
+    --gold-soft: #FFF8E7;
+    --card-bg: #FFFFFF;
+    --shadow-sm: 0 1px 3px rgba(26,23,20,0.06);
+    --shadow-md: 0 4px 16px rgba(26,23,20,0.08);
+    --shadow-lg: 0 12px 40px rgba(26,23,20,0.12);
+    --shadow-card: 0 2px 12px rgba(26,23,20,0.06), 0 0 0 1px rgba(26,23,20,0.03);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--warm-bg);
+    color: var(--ink);
+    overflow: hidden;
+    height: 100dvh;
+    width: 100vw;
+  }
+
+  /* ─── Phone Frame ─── */
+  .phone-frame {
+    width: 390px;
+    height: 844px;
+    margin: 20px auto;
+    background: var(--warm-bg);
+    border-radius: 44px;
+    box-shadow: 0 0 0 8px #1a1714, 0 0 0 10px #3a3530, var(--shadow-lg);
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (max-width: 430px) {
+    .phone-frame {
+      width: 100vw;
+      height: 100dvh;
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+
+  /* ─── Status Bar ─── */
+  .status-bar {
+    height: 54px;
+    padding: 14px 28px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+    z-index: 100;
+  }
+  .status-bar .notch {
+    width: 120px;
+    height: 30px;
+    background: #1a1714;
+    border-radius: 0 0 18px 18px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* ─── Screens ─── */
+  .screen {
+    position: absolute;
+    top: 54px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, transform 0.35s ease;
+    transform: translateX(20px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
+  .screen::-webkit-scrollbar { display: none; }
+  .screen.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  /* ─── Bottom Nav ─── */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 84px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(26,23,20,0.06);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 10px;
+    z-index: 200;
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-item svg { width: 24px; height: 24px; color: var(--ink-muted); transition: color 0.2s; }
+  .nav-item span { font-size: 10px; font-weight: 500; color: var(--ink-muted); transition: color 0.2s; }
+  .nav-item.active svg { color: var(--accent); }
+  .nav-item.active span { color: var(--accent); font-weight: 600; }
+
+  /* ─── Header ─── */
+  .screen-header {
+    padding: 16px 24px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--ink);
+    letter-spacing: -0.5px;
+  }
+  .logo em { font-style: italic; color: var(--accent); }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+  .wallet-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--green-soft);
+    color: var(--green);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .wallet-pill:hover { background: var(--green); color: white; }
+  .wallet-pill svg { width: 16px; height: 16px; }
+  .impact-score-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(232, 107, 74, 0.12);
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .impact-score-pill:hover { background: var(--accent); color: white; }
+  .impact-score-pill svg { width: 16px; height: 16px; }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: transparent;
+    border: none;
+  }
+  .icon-btn:hover { background: var(--warm-bg-deep); }
+  .icon-btn svg { width: 20px; height: 20px; color: var(--ink); }
+
+  /* ─── Categories ─── */
+  .categories-row {
+    display: flex;
+    gap: 8px;
+    padding: 4px 24px 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .categories-row::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--card-bg);
+    color: var(--ink-soft);
+    border: 1px solid rgba(26,23,20,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .cat-pill.active, .cat-pill:hover {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+
+  /* ─── Featured Banner ─── */
+  .featured-banner {
+    margin: 0 24px 20px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    height: 180px;
+    cursor: pointer;
+  }
+  .featured-banner .fb-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #E86B4A 0%, #D4A843 100%);
+  }
+  .featured-banner .fb-pattern {
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    background-image: radial-gradient(circle at 20% 50%, white 1px, transparent 1px),
+                      radial-gradient(circle at 80% 20%, white 1px, transparent 1px),
+                      radial-gradient(circle at 60% 80%, white 1.5px, transparent 1.5px);
+    background-size: 40px 40px, 60px 60px, 50px 50px;
+  }
+  .featured-banner .fb-content {
+    position: relative;
+    z-index: 2;
+    padding: 24px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+  }
+  .fb-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    opacity: 0.85;
+  }
+  .fb-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    line-height: 1.2;
+    max-width: 260px;
+  }
+  .fb-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    width: fit-content;
+  }
+
+  /* ─── Card Stack (Swipeable) ─── */
+  .card-stack-section {
+    padding: 0 24px 16px;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+  .card-stack {
+    position: relative;
+    height: 320px;
+    perspective: 1000px;
+  }
+  .swipe-card {
+    position: absolute;
+    width: 100%;
+    height: 300px;
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    cursor: grab;
+    transition: transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  .swipe-card:active { cursor: grabbing; }
+  .swipe-card .card-image {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .swipe-card .card-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: linear-gradient(transparent, white);
+  }
+  .card-body { padding: 14px 18px; }
+  .card-org-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 19px;
+    margin-bottom: 4px;
+  }
+  .card-org-cause {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card-org-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 18px 14px;
+  }
+  .card-stat {
+    font-size: 12px;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .card-stat svg { width: 14px; height: 14px; }
+
+  .donate-swipe-hint {
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--green);
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .swipe-card:hover .donate-swipe-hint { opacity: 1; }
+
+  /* Swipe overlays */
+  .swipe-overlay {
+    position: absolute;
+    top: 16px;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .swipe-overlay.donate {
+    right: 16px;
+    background: var(--green-soft);
+    color: var(--green);
+    border: 2px solid var(--green);
+  }
+  .swipe-overlay.skip {
+    left: 16px;
+    background: var(--warm-bg-deep);
+    color: var(--ink-muted);
+    border: 2px solid var(--ink-muted);
+  }
+
+  /* Card behind preview */
+  .swipe-card.behind-1 { transform: scale(0.95) translateY(10px); opacity: 0.7; z-index: 1; }
+  .swipe-card.behind-2 { transform: scale(0.90) translateY(20px); opacity: 0.4; z-index: 0; }
+  .swipe-card.top { z-index: 5; }
+
+  /* ─── Feed List ─── */
+  .feed-section {
+    padding: 8px 24px 120px;
+  }
+  .feed-section .section-label { margin-bottom: 16px; }
+  .feed-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px;
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .feed-item:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .feed-thumb {
+    width: 68px;
+    height: 68px;
+    border-radius: var(--radius-xs);
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+  }
+  .feed-info { flex: 1; min-width: 0; }
+  .feed-name { font-weight: 600; font-size: 14px; margin-bottom: 2px; }
+  .feed-cause { font-size: 11px; color: var(--accent); font-weight: 500; margin-bottom: 4px; }
+  .feed-desc { font-size: 12px; color: var(--ink-soft); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .feed-donate-btn {
+    flex-shrink: 0;
+    align-self: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .feed-donate-btn:hover { background: var(--accent); }
+  .feed-donate-btn:hover svg { color: white; }
+  .feed-donate-btn svg { width: 18px; height: 18px; color: var(--accent); transition: color 0.2s; }
+
+  /* ─── Wallet Screen ─── */
+  .wallet-header {
+    text-align: center;
+    padding: 24px 24px 0;
+  }
+  .wallet-balance-label {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+  }
+  .wallet-balance {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .wallet-tokens {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .wallet-tokens strong { color: var(--ink); }
+
+  .wallet-options {
+    display: flex;
+    gap: 10px;
+    padding: 0 24px;
+    margin-bottom: 28px;
+  }
+  .wallet-opt {
+    flex: 1;
+    padding: 16px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--card-bg);
+    border: 2px solid rgba(26,23,20,0.08);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .wallet-opt:hover, .wallet-opt.selected {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .wallet-opt .opt-amount {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 2px;
+  }
+  .wallet-opt .opt-tokens {
+    font-size: 11px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .wallet-opt .opt-bonus {
+    font-size: 10px;
+    color: var(--green);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  .wallet-action-btns {
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .btn-primary {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--accent);
+    color: white;
+  }
+  .btn-primary:hover { background: var(--accent-glow); transform: translateY(-1px); }
+  .btn-secondary {
+    width: 100%;
+    padding: 16px;
+    border-radius: 14px;
+    border: 1.5px solid rgba(26,23,20,0.12);
+    background: transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { background: var(--warm-bg-deep); }
+
+  .subscription-card {
+    margin: 0 24px 24px;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: linear-gradient(135deg, #1A1714 0%, #3a3530 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .subscription-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 120px;
+    height: 120px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+  .sub-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .sub-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+  .sub-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+  .sub-plans { display: flex; gap: 8px; margin-bottom: 16px; }
+  .sub-plan {
+    flex: 1;
+    padding: 12px;
+    border-radius: var(--radius-xs);
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.1);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sub-plan:hover, .sub-plan.selected {
+    border-color: var(--gold);
+    background: rgba(212,168,67,0.12);
+  }
+  .sub-plan .plan-price { font-weight: 700; font-size: 16px; }
+  .sub-plan .plan-freq { font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 2px; }
+  .sub-plan .plan-tokens { font-size: 11px; color: var(--gold); margin-top: 6px; font-weight: 600; }
+  .sub-cta {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sub-cta:hover { background: #E0B84E; }
+
+  /* ─── Activity History ─── */
+  .activity-section {
+    padding: 0 24px 120px;
+  }
+  .activity-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(26,23,20,0.05);
+  }
+  .activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .activity-icon.donated { background: var(--green-soft); color: var(--green); }
+  .activity-icon.topup { background: var(--accent-soft); color: var(--accent); }
+  .activity-icon svg { width: 18px; height: 18px; }
+  .activity-info { flex: 1; }
+  .activity-title { font-size: 14px; font-weight: 500; }
+  .activity-time { font-size: 11px; color: var(--ink-muted); }
+  .activity-amount { font-size: 14px; font-weight: 600; }
+  .activity-amount.negative { color: var(--ink-soft); }
+  .activity-amount.positive { color: var(--green); }
+
+  /* ─── Impact / Points Screen ─── */
+  .impact-hero {
+    text-align: center;
+    padding: 24px 24px 0;
+  }
+  .impact-ring {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 6px solid var(--warm-bg-deep);
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+  }
+  .impact-ring::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 6px solid transparent;
+    border-top-color: var(--accent);
+    border-right-color: var(--accent);
+    border-bottom-color: var(--accent);
+    transform: rotate(-30deg);
+  }
+  .impact-ring .points-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .impact-ring .points-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-weight: 500;
+    margin-top: 2px;
+  }
+  .impact-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+  .impact-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+
+  .impact-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 0 24px;
+    margin-bottom: 24px;
+  }
+  .impact-stat-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    padding: 16px 12px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .stat-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    color: var(--ink);
+  }
+  .stat-label {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+  }
+
+  .invite-card {
+    margin: 0 24px 20px;
+    padding: 20px;
+    border-radius: var(--radius);
+    background: var(--accent-soft);
+    border: 1.5px solid rgba(232,107,74,0.15);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .invite-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+  .invite-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .invite-icon svg { width: 22px; height: 22px; color: white; }
+  .invite-text { flex: 1; }
+  .invite-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 2px; }
+  .invite-text p { font-size: 12px; color: var(--ink-soft); line-height: 1.4; }
+
+  /* Leaderboard */
+  .leaderboard {
+    padding: 0 24px 120px;
+  }
+  .leaderboard .section-label { margin-bottom: 14px; }
+  .lb-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+    box-shadow: var(--shadow-sm);
+  }
+  .lb-item.you { border: 1.5px solid var(--accent); }
+  .lb-rank {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    width: 28px;
+    text-align: center;
+    color: var(--ink-muted);
+  }
+  .lb-item:nth-child(2) .lb-rank { color: var(--gold); }
+  .lb-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--warm-bg-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .lb-name { flex: 1; font-size: 14px; font-weight: 500; }
+  .lb-name .you-badge { font-size: 10px; color: var(--accent); font-weight: 600; margin-left: 6px; }
+  .lb-points { font-size: 14px; font-weight: 700; color: var(--accent); }
+
+  /* ─── Profile Screen ─── */
+  .profile-header {
+    text-align: center;
+    padding: 24px;
+  }
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    margin: 0 auto 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: white;
+  }
+  .profile-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 2px;
+  }
+  .profile-handle { font-size: 13px; color: var(--ink-muted); margin-bottom: 4px; }
+  .profile-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--gold-soft);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 12px;
+  }
+
+  .profile-stats {
+    display: flex;
+    gap: 0;
+    margin: 0 24px 24px;
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+  .profile-stat {
+    flex: 1;
+    padding: 16px;
+    text-align: center;
+    border-right: 1px solid rgba(26,23,20,0.05);
+  }
+  .profile-stat:last-child { border-right: none; }
+  .profile-stat-val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+  }
+  .profile-stat-label {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  .profile-menu {
+    padding: 0 24px 120px;
+  }
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(26,23,20,0.05);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .menu-item:hover { opacity: 0.7; }
+  .menu-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-icon svg { width: 20px; height: 20px; }
+  .menu-label { flex: 1; font-size: 15px; font-weight: 500; }
+  .menu-chevron { color: var(--ink-muted); }
+
+  /* ─── Org Detail (Modal) ─── */
+  .org-detail-modal {
+    position: absolute;
+    inset: 0;
+    z-index: 300;
+    background: var(--warm-bg);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1), opacity 0.3s;
+    overflow-y: auto;
+  }
+  .org-detail-modal.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  .org-hero-img {
+    width: 100%;
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .org-hero-img::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(transparent, var(--warm-bg));
+  }
+  .org-back-btn {
+    position: absolute;
+    top: 60px;
+    left: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    border: none;
+  }
+  .org-back-btn svg { width: 18px; height: 18px; }
+  .org-detail-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    margin-bottom: 4px;
+  }
+  .org-detail-cause {
+    font-size: 13px;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .org-detail-stats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .org-d-stat { font-size: 13px; color: var(--ink-soft); }
+  .org-d-stat strong { color: var(--ink); }
+  .org-detail-desc {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+  }
+  .org-donate-bar {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(26,23,20,0.06);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .org-donate-bar .btn-primary { flex: 1; }
+
+  /* ─── Org Hero Gallery ─── */
+  .org-hero-gallery {
+    width: 100%;
+    height: 280px;
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--warm-bg-deep);
+  }
+  .org-hero-photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 0.4s ease;
+  }
+  .org-hero-gradient-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .org-hero-gradient-fallback.visible { opacity: 1; }
+  .org-hero-fade {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: linear-gradient(transparent, var(--warm-bg));
+    pointer-events: none;
+    z-index: 3;
+  }
+  .org-photo-strip {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 16px;
+    z-index: 5;
+  }
+  .org-photo-thumb {
+    width: 48px;
+    height: 36px;
+    border-radius: 6px;
+    background-size: cover;
+    background-position: center;
+    cursor: pointer;
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: border-color 0.2s, transform 0.2s;
+    flex-shrink: 0;
+  }
+  .org-photo-thumb.active {
+    border-color: white;
+    transform: scale(1.08);
+  }
+
+  /* ─── Org Detail Body (updated padding) ─── */
+  .org-detail-body { padding: 0 24px 100px; margin-top: -40px; position: relative; }
+
+  /* ─── Mission Pull Quote ─── */
+  .org-mission-quote {
+    margin: 20px 0 24px;
+    padding: 20px 20px 20px 16px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    position: relative;
+  }
+  .mission-quote-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 56px;
+    color: var(--accent);
+    opacity: 0.25;
+    line-height: 0.5;
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    pointer-events: none;
+    user-select: none;
+  }
+  .mission-quote-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-style: italic;
+    padding-left: 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── Trust Signals Bar ─── */
+  .org-trust-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .trust-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .trust-pill.rating { background: var(--gold-soft); color: var(--gold); border: 1px solid rgba(212,168,67,0.2); }
+  .trust-pill.founded { background: var(--warm-bg-deep); color: var(--ink-soft); border: 1px solid rgba(26,23,20,0.08); }
+  .trust-pill.country { background: var(--warm-bg-deep); color: var(--ink-soft); border: 1px solid rgba(26,23,20,0.08); }
+  .trust-pill.verified { background: var(--green-soft); color: var(--green); border: 1px solid rgba(58,175,107,0.2); }
+
+  /* ─── Org Section Header ─── */
+  .org-section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .org-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    color: var(--ink-muted);
+  }
+
+  /* ─── Impact Metrics Scroll ─── */
+  .org-impact-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0 16px;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    scrollbar-width: none;
+  }
+  .org-impact-scroll::-webkit-scrollbar { display: none; }
+  .org-impact-card {
+    flex-shrink: 0;
+    width: 110px;
+    padding: 16px 12px;
+    background: var(--card-bg);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-card);
+    text-align: center;
+    border: 1px solid rgba(26,23,20,0.04);
+  }
+  .impact-card-icon { font-size: 26px; margin-bottom: 8px; line-height: 1; }
+  .impact-card-value {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+  .impact-card-label {
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
+  }
+
+  /* ─── Video Spotlight ─── */
+  .org-video-card {
+    width: 100%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-md);
+    position: relative;
+    cursor: pointer;
+    background: #000;
+  }
+  .org-video-thumb {
+    width: 100%;
+    height: 196px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+  }
+  .org-video-thumb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+  }
+  .org-video-play-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .org-video-card:hover .org-video-play-btn,
+  .org-video-card:active .org-video-play-btn { transform: scale(1.1); background: white; }
+  .org-video-play-btn svg { width: 20px; height: 20px; color: var(--accent); margin-left: 3px; }
+  .org-video-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.92);
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  }
+  .org-video-iframe { width: 100%; height: 196px; border: none; display: block; }
+
+  /* ─── Beneficiary Stories ─── */
+  .org-stories-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0 20px;
+    margin: 0 -24px;
+    padding-left: 24px;
+    padding-right: 24px;
+    scrollbar-width: none;
+  }
+  .org-stories-scroll::-webkit-scrollbar { display: none; }
+  .org-story-card {
+    flex-shrink: 0;
+    width: 240px;
+    padding: 16px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+    border: 1px solid rgba(26,23,20,0.04);
+  }
+  .story-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .story-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--warm-bg-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .story-name { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 1px; }
+  .story-location { font-size: 11px; color: var(--ink-muted); }
+  .story-quote-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent);
+    opacity: 0.4;
+    line-height: 0.8;
+    margin-bottom: 4px;
+  }
+  .story-quote-text { font-size: 13px; line-height: 1.55; color: var(--ink-soft); font-style: italic; }
+
+  /* ─── Recent Activity Feed ─── */
+  .org-activity-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 24px; }
+  .org-activity-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--warm-bg-deep);
+  }
+  .org-activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .org-activity-dot.donation { background: var(--green); }
+  .org-activity-dot.milestone { background: var(--gold); }
+  .org-activity-dot.update { background: var(--accent); }
+  .org-activity-text { flex: 1; font-size: 12px; color: var(--ink-soft); line-height: 1.3; }
+  .org-activity-time { font-size: 11px; color: var(--ink-muted); font-weight: 500; flex-shrink: 0; }
+
+  /* ─── Donation Celebration ─── */
+  .celebration-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 500;
+    background: rgba(26,23,20,0.4);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .celebration-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .celebration-card {
+    width: 300px;
+    background: var(--card-bg);
+    border-radius: 24px;
+    padding: 36px 28px;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  .celebration-overlay.show .celebration-card { transform: scale(1); }
+  .celebration-emoji { font-size: 56px; margin-bottom: 16px; }
+  .celebration-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    margin-bottom: 6px;
+  }
+  .celebration-subtitle {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+  .celebration-points {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .celebration-card .btn-primary { margin-bottom: 8px; }
+  .celebration-card .btn-text {
+    background: none;
+    border: none;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink-muted);
+    cursor: pointer;
+    padding: 8px;
+  }
+
+  /* ─── Animations ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-in { animation: fadeInUp 0.5s ease forwards; }
+  .delay-1 { animation-delay: 0.05s; opacity: 0; }
+  .delay-2 { animation-delay: 0.1s; opacity: 0; }
+  .delay-3 { animation-delay: 0.15s; opacity: 0; }
+  .delay-4 { animation-delay: 0.2s; opacity: 0; }
+  .delay-5 { animation-delay: 0.25s; opacity: 0; }
+
+  /* ─── Particle effects ─── */
+  .confetti {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-frame" id="app">
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span>9:41</span>
+    <div class="notch"></div>
+    <span>⚡ 87%</span>
+  </div>
+
+  <!-- ═══════════════ DISCOVER SCREEN ═══════════════ -->
+  <div class="screen active" id="screen-discover">
+    <div class="screen-header animate-in delay-1">
+      <div class="logo">50k<em>2</em></div>
+      <div class="header-actions">
+        <div class="impact-score-pill" onclick="switchScreen('impact')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span id="header-impact-score">38</span>
+        </div>
+        <button class="icon-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="categories-row animate-in delay-2">
+      <div class="cat-pill active">For You</div>
+      <div class="cat-pill">Education</div>
+      <div class="cat-pill">Environment</div>
+      <div class="cat-pill">Health</div>
+      <div class="cat-pill">Animals</div>
+      <div class="cat-pill">Arts</div>
+      <div class="cat-pill">Community</div>
+    </div>
+
+    <div class="featured-banner animate-in delay-3" onclick="openOrgDetail(0)">
+      <div class="fb-bg"></div>
+      <div class="fb-pattern"></div>
+      <div class="fb-content">
+        <div class="fb-label">🔥 Trending This Week</div>
+        <div class="fb-title">Coral Reef Alliance just hit 50k donors</div>
+        <div class="fb-cta">Learn their story →</div>
+      </div>
+    </div>
+
+    <div class="card-stack-section animate-in delay-4">
+      <div class="section-label">Swipe right to give $2</div>
+      <div class="card-stack" id="card-stack">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+
+    <div class="feed-section">
+      <div class="section-label animate-in delay-5">More for you</div>
+      <div id="feed-list">
+        <!-- Feed items injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WALLET SCREEN ═══════════════ -->
+  <div class="screen" id="screen-wallet">
+    <div class="screen-header">
+      <div class="logo">Wallet</div>
+      <button class="icon-btn" onclick="switchScreen('discover')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="wallet-header">
+      <div class="wallet-balance-label">Your Giving Balance</div>
+      <div class="wallet-balance">$<span id="wallet-balance-main">48</span></div>
+      <div class="wallet-tokens"><strong>24 donations</strong> ready to give</div>
+    </div>
+
+    <div class="wallet-options" id="topup-options">
+      <div class="wallet-opt" data-amount="20" onclick="selectTopup(this)">
+        <div class="opt-amount">$20</div>
+        <div class="opt-tokens">10 donations</div>
+      </div>
+      <div class="wallet-opt selected" data-amount="50" onclick="selectTopup(this)">
+        <div class="opt-amount">$50</div>
+        <div class="opt-tokens">25 donations</div>
+        <div class="opt-bonus">Most Popular</div>
+      </div>
+      <div class="wallet-opt" data-amount="100" onclick="selectTopup(this)">
+        <div class="opt-amount">$100</div>
+        <div class="opt-tokens">50 donations</div>
+        <div class="opt-bonus">+2 Bonus</div>
+      </div>
+    </div>
+
+    <div class="wallet-action-btns">
+      <button class="btn-primary" onclick="topUp()">Add Funds</button>
+    </div>
+
+    <div class="subscription-card">
+      <div class="sub-label">✦ Monthly Giving Plan</div>
+      <div class="sub-title">Give effortlessly, every month</div>
+      <div class="sub-desc">Auto-load your wallet. Earn bonus tokens and exclusive badges.</div>
+      <div class="sub-plans">
+        <div class="sub-plan" onclick="selectPlan(this)">
+          <div class="plan-price">$10</div>
+          <div class="plan-freq">/month</div>
+          <div class="plan-tokens">5 donations</div>
+        </div>
+        <div class="sub-plan selected" onclick="selectPlan(this)">
+          <div class="plan-price">$25</div>
+          <div class="plan-freq">/month</div>
+          <div class="plan-tokens">13 + 1 bonus</div>
+        </div>
+        <div class="sub-plan" onclick="selectPlan(this)">
+          <div class="plan-price">$50</div>
+          <div class="plan-freq">/month</div>
+          <div class="plan-tokens">25 + 3 bonus</div>
+        </div>
+      </div>
+      <button class="sub-cta">Start Monthly Giving</button>
+    </div>
+
+    <div class="activity-section">
+      <div class="section-label">Recent Activity</div>
+      <div class="activity-item">
+        <div class="activity-icon donated">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="activity-info">
+          <div class="activity-title">Ocean Conservancy</div>
+          <div class="activity-time">Today, 2:15 PM</div>
+        </div>
+        <div class="activity-amount negative">-$2</div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon donated">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="activity-info">
+          <div class="activity-title">Code.org</div>
+          <div class="activity-time">Today, 2:12 PM</div>
+        </div>
+        <div class="activity-amount negative">-$2</div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon topup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+        </div>
+        <div class="activity-info">
+          <div class="activity-title">Wallet Top-Up</div>
+          <div class="activity-time">Yesterday, 10:00 AM</div>
+        </div>
+        <div class="activity-amount positive">+$50</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ IMPACT SCREEN ═══════════════ -->
+  <div class="screen" id="screen-impact">
+    <div class="screen-header">
+      <div class="logo">Impact</div>
+      <button class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+      </button>
+    </div>
+
+    <div class="impact-hero">
+      <div class="impact-ring">
+        <div class="points-num" id="total-points">38</div>
+        <div class="points-label">Impact Score</div>
+      </div>
+      <div class="impact-title">You're Making Waves 🌊</div>
+      <div class="impact-subtitle">Your generosity is reaching 14 organizations</div>
+    </div>
+
+    <div class="impact-stats">
+      <div class="impact-stat-card">
+        <div class="stat-value" id="stat-donated">$28</div>
+        <div class="stat-label">Given</div>
+      </div>
+      <div class="impact-stat-card">
+        <div class="stat-value" id="stat-orgs">14</div>
+        <div class="stat-label">Orgs</div>
+      </div>
+      <div class="impact-stat-card">
+        <div class="stat-value" id="stat-referrals">5</div>
+        <div class="stat-label">Invited</div>
+      </div>
+    </div>
+
+    <div class="invite-card">
+      <div class="invite-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      </div>
+      <div class="invite-text">
+        <h4>Invite Friends, Earn Points</h4>
+        <p>Get 2 share points for each friend who donates. Share your unique link now.</p>
+      </div>
+    </div>
+
+    <div class="leaderboard">
+      <div class="section-label">This Week's Top Givers</div>
+      <div class="lb-item">
+        <div class="lb-rank">1</div>
+        <div class="lb-avatar">SR</div>
+        <div class="lb-name">Sarah R.</div>
+        <div class="lb-points">142 pts</div>
+      </div>
+      <div class="lb-item">
+        <div class="lb-rank">2</div>
+        <div class="lb-avatar">MK</div>
+        <div class="lb-name">Marcus K.</div>
+        <div class="lb-points">98 pts</div>
+      </div>
+      <div class="lb-item">
+        <div class="lb-rank">3</div>
+        <div class="lb-avatar">JL</div>
+        <div class="lb-name">Jamie L.</div>
+        <div class="lb-points">76 pts</div>
+      </div>
+      <div class="lb-item you">
+        <div class="lb-rank">7</div>
+        <div class="lb-avatar" style="background:var(--accent-soft);color:var(--accent);">TY</div>
+        <div class="lb-name">You <span class="you-badge">That's you!</span></div>
+        <div class="lb-points" id="lb-your-points">38 pts</div>
+      </div>
+      <div class="lb-item">
+        <div class="lb-rank">8</div>
+        <div class="lb-avatar">RN</div>
+        <div class="lb-name">Rachel N.</div>
+        <div class="lb-points">34 pts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ PROFILE SCREEN ═══════════════ -->
+  <div class="screen" id="screen-profile">
+    <div class="screen-header">
+      <div class="logo">Profile</div>
+      <button class="icon-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        </button>
+    </div>
+
+    <div class="profile-header">
+      <div class="profile-avatar">T</div>
+      <div class="profile-name">Tyler</div>
+      <div class="profile-handle">@tyler_gives</div>
+      <div class="profile-badge">✦ Monthly Giver</div>
+    </div>
+
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="p-total-given">$28</div>
+        <div class="profile-stat-label">Total Given</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="p-total-orgs">14</div>
+        <div class="profile-stat-label">Orgs Supported</div>
+      </div>
+      <div class="profile-stat">
+        <div class="profile-stat-val" id="p-total-points">38</div>
+        <div class="profile-stat-label">Impact Score</div>
+      </div>
+    </div>
+
+    <div class="profile-menu">
+      <div class="menu-item">
+        <div class="menu-icon" style="background:var(--green-soft);color:var(--green);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="menu-label">My Donations</div>
+        <div class="menu-chevron">›</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background:var(--accent-soft);color:var(--accent);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+        </div>
+        <div class="menu-label">Saved Organizations</div>
+        <div class="menu-chevron">›</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background:var(--gold-soft);color:var(--gold);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <div class="menu-label">Badges & Achievements</div>
+        <div class="menu-chevron">›</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background:var(--warm-bg-deep);color:var(--ink-soft);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div class="menu-label">Tax Receipts</div>
+        <div class="menu-chevron">›</div>
+      </div>
+      <div class="menu-item">
+        <div class="menu-icon" style="background:var(--warm-bg-deep);color:var(--ink-soft);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9"/></svg>
+        </div>
+        <div class="menu-label">Settings</div>
+        <div class="menu-chevron">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ ORG DETAIL MODAL ═══════════════ -->
+  <div class="org-detail-modal" id="org-detail-modal">
+
+    <!-- 1. HERO GALLERY -->
+    <div class="org-hero-gallery" id="org-hero-gallery">
+      <button class="org-back-btn" onclick="closeOrgDetail()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="org-hero-photo" id="org-hero-photo"></div>
+      <div class="org-hero-gradient-fallback" id="org-hero-fallback"></div>
+      <div class="org-hero-fade"></div>
+      <div class="org-photo-strip" id="org-photo-strip"></div>
+    </div>
+
+    <!-- 2–9. BODY CONTENT -->
+    <div class="org-detail-body">
+      <!-- 2. Identity -->
+      <div class="org-detail-name" id="org-detail-name"></div>
+      <div class="org-detail-cause" id="org-detail-cause"></div>
+      <div class="org-detail-stats">
+        <div class="org-d-stat"><strong id="org-detail-donors">0</strong> donors</div>
+        <div class="org-d-stat"><strong id="org-detail-raised">$0</strong> raised</div>
+      </div>
+
+      <!-- 3. Mission Pull Quote -->
+      <div class="org-mission-quote" id="org-mission-quote">
+        <div class="mission-quote-mark">"</div>
+        <div class="mission-quote-text" id="org-mission-text"></div>
+      </div>
+
+      <!-- 4. Trust Signals -->
+      <div class="org-trust-bar" id="org-trust-bar"></div>
+
+      <!-- 5. Impact Metrics -->
+      <div id="org-impact-section">
+        <div class="org-section-header"><div class="org-section-label">Real Impact</div></div>
+        <div class="org-impact-scroll" id="org-impact-scroll"></div>
+      </div>
+
+      <!-- 6. Video Spotlight -->
+      <div class="org-video-card" id="org-video-card" onclick="playOrgVideo(this)">
+        <div class="org-video-thumb" id="org-video-thumb">
+          <div class="org-video-play-btn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="org-video-label">Watch their story</div>
+        </div>
+      </div>
+
+      <!-- 7. Beneficiary Stories -->
+      <div id="org-stories-section">
+        <div class="org-section-header"><div class="org-section-label">Their Stories</div></div>
+        <div class="org-stories-scroll" id="org-stories-scroll"></div>
+      </div>
+
+      <!-- 8. Recent Activity -->
+      <div id="org-activity-section">
+        <div class="org-section-header"><div class="org-section-label">Right now</div></div>
+        <div class="org-activity-list" id="org-activity-list"></div>
+      </div>
+
+      <!-- 9. Description -->
+      <div class="org-detail-desc" id="org-detail-desc"></div>
+    </div>
+
+    <!-- 10. Sticky Donate Bar -->
+    <div class="org-donate-bar">
+      <button class="btn-secondary" style="flex:0.4;padding:14px;" onclick="closeOrgDetail()">
+        <svg style="width:18px;height:18px;vertical-align:middle;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+      </button>
+      <button class="btn-primary" onclick="donateFromDetail()">Give $2 ❤️</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ CELEBRATION MODAL ═══════════════ -->
+  <div class="celebration-overlay" id="celebration">
+    <div class="celebration-card">
+      <div class="celebration-emoji">🎉</div>
+      <div class="celebration-title">You just gave $2!</div>
+      <div class="celebration-subtitle" id="celebration-org"></div>
+      <div class="celebration-points">+2 Impact Score</div>
+      <button class="btn-primary" onclick="closeCelebration(); nextCard();">Keep Giving</button>
+      <button class="btn-text" onclick="closeCelebration()">Done for now</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ BOTTOM NAV ═══════════════ -->
+  <div class="bottom-nav">
+    <div class="nav-item active" onclick="switchScreen('discover')" data-screen="discover">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span>Discover</span>
+    </div>
+    <div class="nav-item" onclick="switchScreen('impact')" data-screen="impact">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span>Impact</span>
+    </div>
+    <div class="nav-item" onclick="switchScreen('wallet')" data-screen="wallet">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 010-4h14v4"/><path d="M3 5v14a2 2 0 002 2h16v-5"/><circle cx="18" cy="14" r="1"/></svg>
+      <span>Wallet</span>
+    </div>
+    <div class="nav-item" onclick="switchScreen('profile')" data-screen="profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Profile</span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── Data ───
+const organizations = [
+  {
+    name: "Ocean Conservancy",
+    cause: "Marine Protection",
+    desc: "Protecting the ocean from today's greatest threats. Working with communities to create science-based solutions for a healthy ocean and the wildlife that depends on it.",
+    donors: "12,340",
+    raised: "$24,680",
+    color: "#2B7A9E",
+    gradient: "linear-gradient(135deg, #2B7A9E, #5BBADB)",
+    emoji: "🌊",
+    photos: [
+      "https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=800&q=80",
+      "https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=800&q=80",
+      "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&q=80"
+    ],
+    mission: "Every ocean we save is a future we protect for the next generation.",
+    impact: [
+      { icon: "🪸", value: "3,200", label: "Acres of reef protected" },
+      { icon: "🗑️", value: "47,000 lbs", label: "Trash removed" },
+      { icon: "🐢", value: "1,800", label: "Sea turtles rescued" },
+      { icon: "🌏", value: "40+", label: "Countries reached" }
+    ],
+    videoUrl: "https://www.youtube.com/embed/WiOJqAGqoRc",
+    videoThumb: "https://img.youtube.com/vi/WiOJqAGqoRc/hqdefault.jpg",
+    stories: [
+      { initials: "MA", name: "Maria A.", location: "Florida, USA", quote: "I grew up diving these reefs. Ocean Conservancy gave me hope that my kids will see what I saw." },
+      { initials: "JT", name: "James T.", location: "Hawaii, USA", quote: "Their beach cleanup brought 400 volunteers together in one morning. I've never felt more connected to my community." },
+      { initials: "SL", name: "Sofia L.", location: "Philippines", quote: "We used to see plastic every dive. After partnering with them, our bay is recovering. The fish are coming back." }
+    ],
+    trust: { rating: "4-Star", founded: "1972", country: "USA", verified: true },
+    recentActivity: [
+      { type: "donation", text: "Elena donated 3 min ago", time: "3m ago" },
+      { type: "milestone", text: "Milestone hit: 12,000 donors!", time: "2h ago" },
+      { type: "update", text: "New cleanup: Gulf of Mexico this Saturday", time: "1d ago" }
+    ]
+  },
+  {
+    name: "Code.org",
+    cause: "Education & Technology",
+    desc: "Expanding access to computer science in schools and increasing participation by young women and students from underrepresented groups.",
+    donors: "8,920",
+    raised: "$17,840",
+    color: "#F59E0B",
+    gradient: "linear-gradient(135deg, #F59E0B, #FCD34D)",
+    emoji: "💻",
+    photos: [
+      "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&q=80",
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+      "https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?w=800&q=80"
+    ],
+    mission: "Every child deserves the chance to learn to code — not just to use technology, but to create it.",
+    impact: [
+      { icon: "🎓", value: "58M+", label: "Students reached" },
+      { icon: "🏫", value: "90,000+", label: "Classrooms enrolled" },
+      { icon: "👩‍💻", value: "49%", label: "Female participants" },
+      { icon: "🌍", value: "180+", label: "Countries" }
+    ],
+    videoUrl: "https://www.youtube.com/embed/nKIu9yen5nc",
+    videoThumb: "https://img.youtube.com/vi/nKIu9yen5nc/hqdefault.jpg",
+    stories: [
+      { initials: "KR", name: "Kezia R.", location: "Atlanta, USA", quote: "I had never touched a computer at 14. Code.org's curriculum changed my entire future. I'm now a software engineer." },
+      { initials: "DM", name: "David M.", location: "Lagos, Nigeria", quote: "Our school had no CS teacher. Code.org gave us a free curriculum and trained me as a facilitator in one weekend." },
+      { initials: "LP", name: "Layla P.", location: "Chicago, USA", quote: "My daughter said she wanted to build apps after Hour of Code. She's 9. That moment was everything." }
+    ],
+    trust: { rating: "4-Star", founded: "2013", country: "USA", verified: true },
+    recentActivity: [
+      { type: "donation", text: "Priya donated 8 min ago", time: "8m ago" },
+      { type: "milestone", text: "Reached 58 million students!", time: "5h ago" },
+      { type: "update", text: "New AI curriculum launching this spring", time: "2d ago" }
+    ]
+  },
+  {
+    name: "One Tree Planted",
+    cause: "Reforestation",
+    desc: "A non-profit focused on global reforestation. One dollar plants one tree. Making it simple for anyone to give back to the environment.",
+    donors: "31,200",
+    raised: "$62,400",
+    color: "#059669",
+    gradient: "linear-gradient(135deg, #059669, #34D399)",
+    emoji: "🌳",
+    photos: [
+      "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80",
+      "https://images.unsplash.com/photo-1542601906897-b78a3e5f7f66?w=800&q=80",
+      "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80"
+    ],
+    mission: "A billion trees isn't enough — but it's exactly where we start.",
+    impact: [
+      { icon: "🌳", value: "80M+", label: "Trees planted" },
+      { icon: "🗺️", value: "47", label: "Countries active" },
+      { icon: "👥", value: "3,500+", label: "Partner companies" },
+      { icon: "🌱", value: "1M+", label: "Donors worldwide" }
+    ],
+    videoUrl: "https://www.youtube.com/embed/Yx13a8EOQCA",
+    videoThumb: "https://img.youtube.com/vi/Yx13a8EOQCA/hqdefault.jpg",
+    stories: [
+      { initials: "AN", name: "Ama N.", location: "Ghana", quote: "Our community planted 10,000 trees last season. The shade and the fruit have already changed our village." },
+      { initials: "RC", name: "Ryan C.", location: "Oregon, USA", quote: "I planted one tree in memory of my father. Knowing it's growing somewhere out there brings me real peace." },
+      { initials: "YT", name: "Yuki T.", location: "Japan", quote: "We partnered with One Tree Planted for our company anniversary. Best team-building thing we've ever done." }
+    ],
+    trust: { rating: "4-Star", founded: "2014", country: "Canada", verified: true },
+    recentActivity: [
+      { type: "donation", text: "Marcus donated 1 min ago", time: "1m ago" },
+      { type: "milestone", text: "80 million trees milestone hit!", time: "1h ago" },
+      { type: "update", text: "Amazon reforestation project now live", time: "3d ago" }
+    ]
+  },
+  {
+    name: "Feeding America",
+    cause: "Hunger Relief",
+    desc: "The nation's largest domestic hunger-relief organization, working to connect people with food and end hunger through a nationwide network of food banks.",
+    donors: "22,450",
+    raised: "$44,900",
+    color: "#DC2626",
+    gradient: "linear-gradient(135deg, #DC2626, #F87171)",
+    emoji: "🍎",
+    photos: [
+      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=80",
+      "https://images.unsplash.com/photo-1593113630400-ea4288922559?w=800&q=80",
+      "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80"
+    ],
+    mission: "No one should go to bed hungry in a country that wastes 80 billion pounds of food each year.",
+    impact: [
+      { icon: "🍽️", value: "6.6B", label: "Meals provided/year" },
+      { icon: "🏦", value: "200+", label: "Food banks" },
+      { icon: "👨‍👩‍👧", value: "40M", label: "People served" },
+      { icon: "🥫", value: "$1 = 10 meals", label: "Your impact" }
+    ],
+    videoUrl: "https://www.youtube.com/embed/ZLXRGBDHBkA",
+    videoThumb: "https://img.youtube.com/vi/ZLXRGBDHBkA/hqdefault.jpg",
+    stories: [
+      { initials: "TJ", name: "Theresa J.", location: "Detroit, USA", quote: "After I lost my job, the food bank was the only reason my kids ate dinner every night. I'll never forget that." },
+      { initials: "BW", name: "Ben W.", location: "Houston, USA", quote: "I volunteer every Saturday. Seeing the gratitude on people's faces — that's the real reward." },
+      { initials: "CM", name: "Carmen M.", location: "Phoenix, USA", quote: "During the pandemic, they were the first ones to show up for our neighborhood. First and most consistent." }
+    ],
+    trust: { rating: "4-Star", founded: "1979", country: "USA", verified: true },
+    recentActivity: [
+      { type: "donation", text: "Sarah donated 12 min ago", time: "12m ago" },
+      { type: "milestone", text: "6.6 billion meals served this year!", time: "4h ago" },
+      { type: "update", text: "Winter drive: 500 new food banks added", time: "1d ago" }
+    ]
+  },
+  {
+    name: "Room to Read",
+    cause: "Literacy & Education",
+    desc: "Transforming the lives of millions of children in low-income communities through literacy and gender equality in education.",
+    donors: "6,780",
+    raised: "$13,560",
+    color: "#7C3AED",
+    gradient: "linear-gradient(135deg, #7C3AED, #A78BFA)",
+    emoji: "📚",
+    photos: [
+      "https://images.unsplash.com/photo-1497486751825-1233686d5d80?w=800&q=80",
+      "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&q=80",
+      "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80"
+    ],
+    mission: "Literacy is not a privilege — it's the foundation of every other right a child deserves.",
+    impact: [
+      { icon: "📖", value: "39M+", label: "Children impacted" },
+      { icon: "📚", value: "23M+", label: "Books published" },
+      { icon: "🏫", value: "20,000+", label: "Schools supported" },
+      { icon: "👧", value: "72%", label: "Participants are girls" }
+    ],
+    videoUrl: "https://www.youtube.com/embed/VkS7DE4wNmA",
+    videoThumb: "https://img.youtube.com/vi/VkS7DE4wNmA/hqdefault.jpg",
+    stories: [
+      { initials: "NP", name: "Nadia P.", location: "Nepal", quote: "I was going to drop out at 12. The girls scholarship kept me in school. I just became the first woman in my village to go to university." },
+      { initials: "OA", name: "Olumide A.", location: "Nigeria", quote: "The books they brought to our classroom were the first ones my students had ever held that were their own." },
+      { initials: "HV", name: "Hana V.", location: "Vietnam", quote: "Room to Read didn't just give my daughter books — they gave her a story about what she could become." }
+    ],
+    trust: { rating: "4-Star", founded: "2000", country: "USA", verified: true },
+    recentActivity: [
+      { type: "donation", text: "Aisha donated 20 min ago", time: "20m ago" },
+      { type: "milestone", text: "39 million children reached!", time: "6h ago" },
+      { type: "update", text: "New literacy program in 3 new countries", time: "2d ago" }
+    ]
+  },
+  {
+    name: "Best Friends Animal Society",
+    cause: "Animal Welfare",
+    desc: "Working to end the killing of dogs and cats in America's shelters by 2025 through building community programs and partnerships.",
+    donors: "18,900",
+    raised: "$37,800",
+    color: "#EC4899",
+    gradient: "linear-gradient(135deg, #EC4899, #F9A8D4)",
+    emoji: "🐾",
+    photos: [
+      "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80",
+      "https://images.unsplash.com/photo-1415369629372-26f2fe60c467?w=800&q=80",
+      "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?w=800&q=80"
+    ],
+    mission: "Until there are none, save them all — every shelter dog and cat deserves a home, not a deadline.",
+    impact: [
+      { icon: "🐶", value: "9,000+", label: "Animals saved/year" },
+      { icon: "🏠", value: "3,900+", label: "Partner shelters" },
+      { icon: "💉", value: "95%", label: "Save rate at sanctuary" },
+      { icon: "🤝", value: "2,600+", label: "Rescue partners" }
+    ],
+    videoUrl: "https://www.youtube.com/embed/qDMm3RJtNgI",
+    videoThumb: "https://img.youtube.com/vi/qDMm3RJtNgI/hqdefault.jpg",
+    stories: [
+      { initials: "LL", name: "Lisa L.", location: "Utah, USA", quote: "Biscuit was 3 days from being put down when Best Friends saved him. He's been my best friend for 6 years now." },
+      { initials: "JP", name: "James P.", location: "Los Angeles, USA", quote: "I fostered my first dog through their program thinking I'd do it once. I've fostered 22 dogs in 3 years. Life-changing." },
+      { initials: "RK", name: "Rena K.", location: "New York, USA", quote: "The staff at the sanctuary treat every animal like it's their own. You can feel how much they care the moment you arrive." }
+    ],
+    trust: { rating: "4-Star", founded: "1984", country: "USA", verified: true },
+    recentActivity: [
+      { type: "donation", text: "Tom donated 5 min ago", time: "5m ago" },
+      { type: "milestone", text: "Over 9,000 animals saved this year!", time: "3h ago" },
+      { type: "update", text: "National adoption weekend: 600 cities", time: "1d ago" }
+    ]
+  }
+];
+
+let balance = 48;
+let sharePoints = 38;
+let totalDonated = 28;
+let orgsDonated = 14;
+let currentCardIndex = 0;
+let currentDetailOrg = null;
+
+// ─── Card Stack ───
+function renderCards() {
+  const stack = document.getElementById('card-stack');
+  stack.innerHTML = '';
+  
+  for (let i = Math.min(currentCardIndex + 2, organizations.length - 1); i >= currentCardIndex; i--) {
+    if (i >= organizations.length) continue;
+    const org = organizations[i];
+    const offset = i - currentCardIndex;
+    
+    const card = document.createElement('div');
+    card.className = `swipe-card ${offset === 0 ? 'top' : `behind-${offset}`}`;
+    card.innerHTML = `
+      <div class="swipe-overlay donate">GIVE $2 ✓</div>
+      <div class="swipe-overlay skip">SKIP ✗</div>
+      ${org.photos && org.photos[0]
+        ? `<div class="card-image" style="background-image:url(${org.photos[0]});background-size:cover;background-position:center;position:relative;">
+             <div style="position:absolute;inset:0;background:linear-gradient(to bottom, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0.32) 100%);"></div>
+           </div>`
+        : `<div class="card-image" style="background:${org.gradient};display:flex;align-items:center;justify-content:center;">
+             <span style="font-size:64px;filter:grayscale(20%);opacity:0.4;">${org.emoji}</span>
+           </div>`
+      }
+      <div class="card-body" onclick="openOrgDetail(${i})">
+        <div class="card-org-name">${org.name}</div>
+        <div class="card-org-cause">${org.cause}</div>
+        <div class="card-org-desc">${org.desc}</div>
+      </div>
+      <div class="card-actions">
+        <div class="card-stat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          ${org.donors} donors
+        </div>
+        <div class="card-stat" style="color:var(--green);font-weight:600;">${org.raised} raised</div>
+      </div>
+      <div class="donate-swipe-hint">
+        Swipe → to give
+        <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>
+    `;
+    
+    if (offset === 0) setupSwipe(card, i);
+    stack.appendChild(card);
+  }
+}
+
+function setupSwipe(card, orgIndex) {
+  let startX = 0, currentX = 0, isDragging = false;
+  const donateOverlay = card.querySelector('.swipe-overlay.donate');
+  const skipOverlay = card.querySelector('.swipe-overlay.skip');
+  
+  function onStart(e) {
+    startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    isDragging = true;
+    card.style.transition = 'none';
+  }
+  
+  function onMove(e) {
+    if (!isDragging) return;
+    const x = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    currentX = x - startX;
+    const rotation = currentX * 0.08;
+    card.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
+    
+    const progress = Math.abs(currentX) / 120;
+    if (currentX > 0) {
+      donateOverlay.style.opacity = Math.min(progress, 1);
+      skipOverlay.style.opacity = 0;
+    } else {
+      skipOverlay.style.opacity = Math.min(progress, 1);
+      donateOverlay.style.opacity = 0;
+    }
+  }
+  
+  function onEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    card.style.transition = 'transform 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease';
+    
+    if (currentX > 100) {
+      // Swipe right → DONATE
+      card.style.transform = `translateX(500px) rotate(30deg)`;
+      card.style.opacity = '0';
+      setTimeout(() => donate(orgIndex), 300);
+    } else if (currentX < -100) {
+      // Swipe left → SKIP
+      card.style.transform = `translateX(-500px) rotate(-30deg)`;
+      card.style.opacity = '0';
+      setTimeout(() => nextCard(), 300);
+    } else {
+      card.style.transform = '';
+      donateOverlay.style.opacity = 0;
+      skipOverlay.style.opacity = 0;
+    }
+    currentX = 0;
+  }
+  
+  card.addEventListener('mousedown', onStart);
+  card.addEventListener('touchstart', onStart, { passive: true });
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, { passive: true });
+  window.addEventListener('mouseup', onEnd);
+  window.addEventListener('touchend', onEnd);
+}
+
+function nextCard() {
+  currentCardIndex++;
+  if (currentCardIndex >= organizations.length) currentCardIndex = 0;
+  renderCards();
+}
+
+// ─── Donate ───
+function donate(orgIndex) {
+  if (balance < 2) {
+    alert("Your wallet is empty! Add funds to keep giving.");
+    switchScreen('wallet');
+    return;
+  }
+  
+  const org = organizations[orgIndex];
+  balance -= 2;
+  sharePoints += 2;
+  totalDonated += 2;
+  orgsDonated++;
+  
+  updateDisplays();
+  showCelebration(org.name);
+}
+
+function donateFromDetail() {
+  if (currentDetailOrg !== null) {
+    donate(currentDetailOrg);
+    closeOrgDetail();
+  }
+}
+
+function showCelebration(orgName) {
+  document.getElementById('celebration-org').textContent = `Your $2 is on its way to ${orgName}`;
+  document.getElementById('celebration').classList.add('show');
+  spawnConfetti();
+}
+
+function closeCelebration() {
+  document.getElementById('celebration').classList.remove('show');
+}
+
+function spawnConfetti() {
+  const overlay = document.getElementById('celebration');
+  const colors = ['#E86B4A', '#3AAF6B', '#D4A843', '#7C3AED', '#EC4899', '#2B7A9E'];
+  for (let i = 0; i < 30; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.left = Math.random() * 300 + 'px';
+    confetti.style.top = '200px';
+    confetti.style.animation = `confettiFall ${0.8 + Math.random() * 1.2}s ease-out forwards`;
+    confetti.style.animationDelay = Math.random() * 0.3 + 's';
+    overlay.querySelector('.celebration-card').appendChild(confetti);
+    setTimeout(() => confetti.remove(), 2500);
+  }
+}
+
+// ─── Feed List ───
+function renderFeed() {
+  const list = document.getElementById('feed-list');
+  list.innerHTML = organizations.map((org, i) => `
+    <div class="feed-item animate-in delay-${Math.min(i + 1, 5)}" onclick="openOrgDetail(${i})">
+      ${org.photos && org.photos[0]
+        ? `<div class="feed-thumb" style="background-image:url(${org.photos[0]});background-size:cover;background-position:center;"></div>`
+        : `<div class="feed-thumb" style="background:${org.gradient};display:flex;align-items:center;justify-content:center;">
+             <span style="font-size:28px;opacity:0.5;">${org.emoji}</span>
+           </div>`
+      }
+      <div class="feed-info">
+        <div class="feed-name">${org.name}</div>
+        <div class="feed-cause">${org.cause}</div>
+        <div class="feed-desc">${org.desc}</div>
+      </div>
+      <button class="feed-donate-btn" onclick="event.stopPropagation(); donate(${i});">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+      </button>
+    </div>
+  `).join('');
+}
+
+// ─── Org Detail ───
+function openOrgDetail(index) {
+  currentDetailOrg = index;
+  const org = organizations[index];
+  const modal = document.getElementById('org-detail-modal');
+
+  // 1. Hero Gallery
+  const heroPhoto = document.getElementById('org-hero-photo');
+  const heroFallback = document.getElementById('org-hero-fallback');
+  const photoStrip = document.getElementById('org-photo-strip');
+  const hasPhotos = org.photos && org.photos.length > 0;
+
+  if (hasPhotos) {
+    heroPhoto.style.backgroundImage = `url(${org.photos[0]})`;
+    heroFallback.classList.remove('visible');
+    photoStrip.innerHTML = org.photos.map((url, i) =>
+      `<div class="org-photo-thumb ${i === 0 ? 'active' : ''}" style="background-image:url(${url})" onclick="selectOrgPhoto(${i}, '${url}')"></div>`
+    ).join('');
+    photoStrip.style.display = 'flex';
+  } else {
+    heroPhoto.style.backgroundImage = '';
+    heroFallback.style.background = org.gradient;
+    heroFallback.innerHTML = `<span style="font-size:72px;opacity:0.4;">${org.emoji}</span>`;
+    heroFallback.classList.add('visible');
+    photoStrip.style.display = 'none';
+  }
+
+  // 2. Identity
+  document.getElementById('org-detail-name').textContent = org.name;
+  document.getElementById('org-detail-cause').textContent = org.cause;
+  document.getElementById('org-detail-donors').textContent = org.donors;
+  document.getElementById('org-detail-raised').textContent = org.raised;
+
+  // 3. Mission Pull Quote
+  const missionQuote = document.getElementById('org-mission-quote');
+  const missionText = document.getElementById('org-mission-text');
+  if (org.mission) {
+    missionText.textContent = org.mission;
+    missionQuote.style.display = 'block';
+  } else {
+    missionQuote.style.display = 'none';
+  }
+
+  // 4. Trust Signals
+  const trustBar = document.getElementById('org-trust-bar');
+  if (org.trust) {
+    const t = org.trust;
+    trustBar.innerHTML = `
+      ${t.verified ? `<span class="trust-pill verified">✓ Verified Nonprofit</span>` : ''}
+      ${t.rating ? `<span class="trust-pill rating">★ ${t.rating} Charity Navigator</span>` : ''}
+      ${t.founded ? `<span class="trust-pill founded">Est. ${t.founded}</span>` : ''}
+      ${t.country ? `<span class="trust-pill country">📍 ${t.country}</span>` : ''}
+    `;
+    trustBar.style.display = 'flex';
+  } else {
+    trustBar.style.display = 'none';
+  }
+
+  // 5. Impact Metrics
+  const impactSection = document.getElementById('org-impact-section');
+  const impactScroll = document.getElementById('org-impact-scroll');
+  if (org.impact && org.impact.length > 0) {
+    impactScroll.innerHTML = org.impact.map(item =>
+      `<div class="org-impact-card">
+        <div class="impact-card-icon">${item.icon}</div>
+        <div class="impact-card-value">${item.value}</div>
+        <div class="impact-card-label">${item.label}</div>
+      </div>`
+    ).join('');
+    impactSection.style.display = 'block';
+  } else {
+    impactSection.style.display = 'none';
+  }
+
+  // 6. Video Spotlight
+  const videoCard = document.getElementById('org-video-card');
+  const videoThumb = document.getElementById('org-video-thumb');
+  if (org.videoUrl && org.videoThumb) {
+    videoThumb.style.backgroundImage = `url(${org.videoThumb})`;
+    const existingIframe = videoCard.querySelector('.org-video-iframe');
+    if (existingIframe) existingIframe.remove();
+    videoThumb.style.display = 'flex';
+    videoCard.dataset.videoUrl = org.videoUrl;
+    videoCard.style.display = 'block';
+  } else {
+    videoCard.style.display = 'none';
+  }
+
+  // 7. Beneficiary Stories
+  const storiesSection = document.getElementById('org-stories-section');
+  const storiesScroll = document.getElementById('org-stories-scroll');
+  const avatarColors = [
+    { bg: 'var(--accent-soft)', color: 'var(--accent)' },
+    { bg: 'var(--green-soft)', color: 'var(--green)' },
+    { bg: 'var(--gold-soft)', color: 'var(--gold)' }
+  ];
+  if (org.stories && org.stories.length > 0) {
+    storiesScroll.innerHTML = org.stories.map((story, i) => {
+      const col = avatarColors[i % avatarColors.length];
+      return `<div class="org-story-card">
+        <div class="story-header">
+          <div class="story-avatar" style="background:${col.bg};color:${col.color};">${story.initials}</div>
+          <div>
+            <div class="story-name">${story.name}</div>
+            <div class="story-location">${story.location}</div>
+          </div>
+        </div>
+        <div class="story-quote-mark">"</div>
+        <div class="story-quote-text">${story.quote}</div>
+      </div>`;
+    }).join('');
+    storiesSection.style.display = 'block';
+  } else {
+    storiesSection.style.display = 'none';
+  }
+
+  // 8. Recent Activity
+  const activitySection = document.getElementById('org-activity-section');
+  const activityList = document.getElementById('org-activity-list');
+  if (org.recentActivity && org.recentActivity.length > 0) {
+    activityList.innerHTML = org.recentActivity.map(item =>
+      `<div class="org-activity-item">
+        <div class="org-activity-dot ${item.type}"></div>
+        <div class="org-activity-text">${item.text}</div>
+        <div class="org-activity-time">${item.time}</div>
+      </div>`
+    ).join('');
+    activitySection.style.display = 'block';
+  } else {
+    activitySection.style.display = 'none';
+  }
+
+  // 9. Description
+  document.getElementById('org-detail-desc').textContent = org.desc;
+
+  // Open modal
+  modal.scrollTop = 0;
+  modal.classList.add('open');
+}
+
+function selectOrgPhoto(photoIndex, url) {
+  document.getElementById('org-hero-photo').style.backgroundImage = `url(${url})`;
+  document.querySelectorAll('.org-photo-thumb').forEach((thumb, i) => {
+    thumb.classList.toggle('active', i === photoIndex);
+  });
+}
+
+function playOrgVideo(cardEl) {
+  const videoUrl = cardEl.dataset.videoUrl;
+  if (!videoUrl) return;
+  const thumbEl = cardEl.querySelector('.org-video-thumb');
+  const iframe = document.createElement('iframe');
+  iframe.className = 'org-video-iframe';
+  iframe.src = videoUrl + '?autoplay=1&rel=0';
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen = true;
+  thumbEl.style.display = 'none';
+  cardEl.appendChild(iframe);
+  cardEl.onclick = null;
+}
+
+function closeOrgDetail() {
+  document.getElementById('org-detail-modal').classList.remove('open');
+  document.getElementById('org-detail-modal').scrollTop = 0;
+  currentDetailOrg = null;
+}
+
+// ─── Navigation ───
+function switchScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${screenId}`).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelector(`.nav-item[data-screen="${screenId}"]`)?.classList.add('active');
+}
+
+// ─── Wallet ───
+function selectTopup(el) {
+  document.querySelectorAll('.wallet-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function selectPlan(el) {
+  document.querySelectorAll('.sub-plan').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function topUp() {
+  const selected = document.querySelector('.wallet-opt.selected');
+  if (!selected) return;
+  const amount = parseInt(selected.dataset.amount);
+  balance += amount;
+  updateDisplays();
+  switchScreen('discover');
+}
+
+// ─── Update All Displays ───
+function updateDisplays() {
+  document.getElementById('balance-display').textContent = balance;
+  document.getElementById('wallet-balance-main').textContent = balance;
+  document.getElementById('total-points').textContent = sharePoints;
+  document.getElementById('stat-donated').textContent = `$${totalDonated}`;
+  document.getElementById('stat-orgs').textContent = orgsDonated;
+  document.getElementById('lb-your-points').textContent = `${sharePoints} pts`;
+  document.getElementById('p-total-given').textContent = `$${totalDonated}`;
+  document.getElementById('p-total-orgs').textContent = orgsDonated;
+  document.getElementById('p-total-points').textContent = sharePoints;
+  const headerScore = document.getElementById('header-impact-score');
+  if (headerScore) headerScore.textContent = sharePoints;
+
+  const donationsAvail = Math.floor(balance / 2);
+  document.querySelector('.wallet-tokens').innerHTML = `<strong>${donationsAvail} donations</strong> ready to give`;
+}
+
+// ─── Category Pills ───
+document.querySelectorAll('.cat-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+
+// ─── Init ───
+renderCards();
+renderFeed();
+</script>
+</body>
+</html>

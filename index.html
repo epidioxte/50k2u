@@ -1376,6 +1376,628 @@
     0% { transform: translateY(0) rotate(0deg); opacity: 1; }
     100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
   }
+
+  /* ═══════════════════════════════════════════════════════
+     ORG ONBOARDING STYLES
+     ═══════════════════════════════════════════════════════ */
+
+  /* ─── Org Landing Page ─── */
+  .org-landing-screen { background: var(--warm-bg); }
+  .org-hero-section {
+    padding: 40px 24px 32px;
+    text-align: center;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--gold) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .org-hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.08;
+    background-image: radial-gradient(circle at 20% 30%, white 1px, transparent 1px),
+                      radial-gradient(circle at 80% 60%, white 1.5px, transparent 1.5px),
+                      radial-gradient(circle at 50% 80%, white 1px, transparent 1px);
+    background-size: 50px 50px, 70px 70px, 60px 60px;
+  }
+  .org-hero-content { position: relative; z-index: 2; }
+  .org-hero-emoji { font-size: 64px; margin-bottom: 16px; }
+  .org-hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .org-hero-subtitle {
+    font-size: 16px;
+    line-height: 1.5;
+    opacity: 0.95;
+    max-width: 300px;
+    margin: 0 auto 32px;
+  }
+  .org-value-props {
+    padding: 28px 24px 32px;
+  }
+  .org-value-card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .org-value-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 22px;
+  }
+  .org-value-icon.green { background: var(--green-soft); }
+  .org-value-icon.accent { background: var(--accent-soft); }
+  .org-value-icon.gold { background: var(--gold-soft); }
+  .org-value-text { flex: 1; }
+  .org-value-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--ink);
+  }
+  .org-value-desc {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .org-social-proof {
+    padding: 0 24px 28px;
+    text-align: center;
+  }
+  .org-stats-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 24px;
+  }
+  .org-stat-item { text-align: center; }
+  .org-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+  .org-stat-label {
+    font-size: 11px;
+    color: var(--ink-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+  .org-landing-cta {
+    padding: 0 24px 120px;
+  }
+
+  /* ─── How It Works / Interactive Model ─── */
+  .org-model-screen { background: var(--warm-bg); padding: 0 24px; }
+  .org-model-header {
+    padding: 32px 0 24px;
+    text-align: center;
+  }
+  .org-model-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .org-model-subtitle {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .org-flow-visual {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 28px 20px;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+  }
+  .flow-step {
+    margin-bottom: 24px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .flow-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .flow-step:last-child { margin-bottom: 0; }
+  .flow-step-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .flow-step-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .flow-amount-box {
+    flex: 1;
+    padding: 16px;
+    border-radius: var(--radius-sm);
+    text-align: center;
+  }
+  .flow-amount-box.donor {
+    background: var(--accent-soft);
+    border: 2px solid var(--accent);
+  }
+  .flow-amount-box.org {
+    background: var(--green-soft);
+    border: 2px solid var(--green);
+  }
+  .flow-amount-box.fee {
+    background: var(--warm-bg-deep);
+    border: 2px solid rgba(26,23,20,0.15);
+  }
+  .flow-amount {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    margin-bottom: 4px;
+  }
+  .flow-amount-box.donor .flow-amount { color: var(--accent); }
+  .flow-amount-box.org .flow-amount { color: var(--green); }
+  .flow-amount-box.fee .flow-amount { color: var(--ink-soft); }
+  .flow-desc {
+    font-size: 12px;
+    color: var(--ink-soft);
+    font-weight: 500;
+  }
+  .flow-arrow {
+    font-size: 20px;
+    color: var(--ink-muted);
+  }
+  .org-callout-box {
+    background: var(--green-soft);
+    border-left: 3px solid var(--green);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 16px 16px 16px 14px;
+    margin-bottom: 24px;
+  }
+  .org-callout-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 4px;
+  }
+  .org-callout-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .org-model-actions {
+    padding-bottom: 120px;
+  }
+
+  /* ─── Wizard Progress Bar ─── */
+  .wizard-progress-bar {
+    padding: 20px 24px 16px;
+    background: var(--warm-bg);
+    border-bottom: 1px solid rgba(26,23,20,0.06);
+  }
+  .wizard-progress-steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .wizard-step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--warm-bg-deep);
+    border: 2px solid rgba(26,23,20,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .wizard-step-dot.completed {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .wizard-step-dot.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+  .wizard-step-dot:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc((100vw - 240px) / 5);
+    height: 2px;
+    background: rgba(26,23,20,0.12);
+  }
+  .wizard-step-dot.completed:not(:last-child)::after {
+    background: var(--green);
+  }
+  .wizard-progress-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+
+  /* ─── Wizard Form Screens ───
+     Screen scrolls naturally (inherits .screen overflow-y:auto). The wizard-actions
+     bar uses sticky so it anchors to the bottom of the scroll area once reached,
+     without ever obscuring form fields before the user scrolls there. */
+  .wizard-form-screen {
+    background: var(--warm-bg);
+    bottom: 84px; /* stop above bottom-nav so scroll area and sticky buttons are visible */
+    display: flex;
+    flex-direction: column;
+  }
+  .wizard-form-screen .wizard-form-body {
+    padding: 24px 24px 0;
+  }
+  .wizard-form-screen .wizard-actions {
+    margin-top: auto;
+  }
+  .wizard-section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .wizard-section-desc {
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin-bottom: 28px;
+  }
+  .form-group {
+    margin-bottom: 20px;
+  }
+  .form-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .form-label .required { color: var(--accent); }
+  .form-input,
+  .form-textarea,
+  .form-select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid rgba(26,23,20,0.12);
+    background: var(--card-bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    transition: all 0.2s;
+  }
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(232,107,74,0.1);
+  }
+  .form-textarea {
+    resize: vertical;
+    min-height: 100px;
+    line-height: 1.6;
+  }
+  .form-hint {
+    font-size: 12px;
+    color: var(--ink-muted);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+  .form-category-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .form-category-pill {
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    background: var(--card-bg);
+    color: var(--ink-soft);
+    border: 1.5px solid rgba(26,23,20,0.12);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .form-category-pill.selected {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* ─── Story Cards (Editable) ─── */
+  .story-card-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .story-card-input {
+    background: var(--card-bg);
+    border: 1.5px solid rgba(26,23,20,0.12);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+  .story-card-header-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .story-photo-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--warm-bg-deep);
+    border: 2px dashed rgba(26,23,20,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .story-photo-placeholder:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .story-card-remove {
+    margin-left: auto;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .story-card-remove:hover {
+    background: rgba(220,38,38,0.1);
+    color: #DC2626;
+  }
+  .add-story-btn {
+    width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    border: 2px dashed rgba(26,23,20,0.2);
+    background: transparent;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .add-story-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  /* ─── Upload Areas ─── */
+  .upload-area {
+    width: 100%;
+    min-height: 140px;
+    border: 2px dashed rgba(26,23,20,0.2);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 24px;
+    text-align: center;
+  }
+  .upload-area:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .upload-icon {
+    font-size: 36px;
+    opacity: 0.4;
+  }
+  .upload-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .upload-hint {
+    font-size: 12px;
+    color: var(--ink-muted);
+  }
+  .gallery-upload-area {
+    min-height: 180px;
+  }
+
+  /* ─── Dynamic Metrics ─── */
+  .metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .metric-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .metric-row .form-input {
+    margin-bottom: 0;
+  }
+  .metric-row .form-input:first-child {
+    flex: 1.2;
+  }
+  .metric-row .form-input:last-child {
+    flex: 1;
+  }
+  .metric-remove-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-xs);
+    background: transparent;
+    border: 1.5px solid rgba(26,23,20,0.12);
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .metric-remove-btn:hover {
+    background: rgba(220,38,38,0.1);
+    color: #DC2626;
+    border-color: rgba(220,38,38,0.3);
+  }
+
+  /* ─── Wizard Actions ───
+     Sticky: scrolls down with content, then sticks at the bottom of the scroll
+     container once it comes into view. Never overlaps fields above it. */
+  .wizard-actions {
+    padding: 16px 24px;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(26,23,20,0.06);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .wizard-actions .btn-secondary {
+    flex: 0.4;
+  }
+  .wizard-actions .btn-primary {
+    flex: 1;
+  }
+
+  /* ─── Preview Screen ─── */
+  .preview-screen {
+    background: var(--warm-bg);
+    bottom: 84px; /* stop above bottom-nav so scroll area and sticky buttons are visible */
+    display: flex;
+    flex-direction: column;
+  }
+  .preview-screen .wizard-actions {
+    margin-top: auto;
+  }
+  .preview-header {
+    padding: 24px 24px 16px;
+    text-align: center;
+  }
+  .preview-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .preview-subtitle {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .preview-edit-btn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(26,23,20,0.12);
+    background: var(--card-bg);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .preview-edit-btn:hover {
+    background: var(--warm-bg-deep);
+  }
+  .preview-body {
+    padding: 0 0 120px;
+  }
+
+  /* ─── Success State ─── */
+  .success-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 400;
+    background: var(--warm-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .success-overlay.show {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .success-content {
+    text-align: center;
+    padding: 24px;
+    max-width: 320px;
+  }
+  .success-emoji {
+    font-size: 72px;
+    margin-bottom: 20px;
+  }
+  .success-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: var(--ink);
+  }
+  .success-message {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+
+  /* ─── Entry Link in Profile ─── */
+  .menu-item.org-entry {
+    border-top: 1px solid rgba(26,23,20,0.1);
+    margin-top: 16px;
+    padding-top: 24px;
+  }
 </style>
 </head>
 <body>
@@ -1678,6 +2300,13 @@
         <div class="menu-label">Settings</div>
         <div class="menu-chevron">›</div>
       </div>
+      <div class="menu-item org-entry" onclick="switchScreen('org-landing')">
+        <div class="menu-icon" style="background:rgba(232,107,74,0.15);color:var(--accent);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="menu-label">Are you an organization?</div>
+        <div class="menu-chevron">›</div>
+      </div>
     </div>
   </div>
 
@@ -1764,6 +2393,439 @@
       <div class="celebration-points">+2 Impact Score</div>
       <button class="btn-primary" onclick="closeCelebration(); nextCard();">Keep Giving</button>
       <button class="btn-text" onclick="closeCelebration()">Done for now</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════
+       ORG ONBOARDING SCREENS
+       ═══════════════════════════════════════════════════════ -->
+
+  <!-- ═══════════════ ORG LANDING PAGE ═══════════════ -->
+  <div class="screen org-landing-screen" id="screen-org-landing">
+    <div class="screen-header">
+      <button class="icon-btn" onclick="switchScreen('profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div style="flex:1;"></div>
+    </div>
+
+    <div class="org-hero-section">
+      <div class="org-hero-content">
+        <div class="org-hero-emoji">🏢</div>
+        <div class="org-hero-title">Reach 50,000 donors. $2 at a time.</div>
+        <div class="org-hero-subtitle">Join nonprofits connecting with a community of micro-givers who care about your mission.</div>
+        <button class="btn-primary" onclick="startOrgOnboarding()">Get Started</button>
+      </div>
+    </div>
+
+    <div class="org-value-props">
+      <div class="org-value-card">
+        <div class="org-value-icon green">💰</div>
+        <div class="org-value-text">
+          <div class="org-value-title">Keep 100% of Donations</div>
+          <div class="org-value-desc">Donors cover all fees. You receive the full $2 from every subscription.</div>
+        </div>
+      </div>
+      <div class="org-value-card">
+        <div class="org-value-icon accent">🚫</div>
+        <div class="org-value-text">
+          <div class="org-value-title">Zero Platform Fees for You</div>
+          <div class="org-value-desc">No hidden costs, no monthly charges. We profit from donor processing fees, not your donations.</div>
+        </div>
+      </div>
+      <div class="org-value-card">
+        <div class="org-value-icon gold">🌟</div>
+        <div class="org-value-text">
+          <div class="org-value-title">Tap Into a Community</div>
+          <div class="org-value-desc">Access thousands of engaged micro-givers discovering new causes to support every day.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="org-social-proof">
+      <div class="org-stats-row">
+        <div class="org-stat-item">
+          <div class="org-stat-num">50k+</div>
+          <div class="org-stat-label">Active Donors</div>
+        </div>
+        <div class="org-stat-item">
+          <div class="org-stat-num">$4.2M</div>
+          <div class="org-stat-label">Total Given</div>
+        </div>
+        <div class="org-stat-item">
+          <div class="org-stat-num">800+</div>
+          <div class="org-stat-label">Nonprofits</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="org-landing-cta">
+      <button class="btn-primary" onclick="startOrgOnboarding()">Join 50k2 Today</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ HOW IT WORKS (Interactive Model) ═══════════════ -->
+  <div class="screen org-model-screen" id="screen-org-model">
+    <div class="screen-header">
+      <button class="icon-btn" onclick="goBackOnboarding()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div style="flex:1;"></div>
+    </div>
+
+    <div class="org-model-header">
+      <div class="org-model-title">How It Works</div>
+      <div class="org-model-subtitle">Understand our transparent subscription model</div>
+    </div>
+
+    <div class="org-flow-visual">
+      <div class="flow-step" id="flow-step-1">
+        <div class="flow-step-label">Step 1: Donor Subscribes</div>
+        <div class="flow-step-content">
+          <div class="flow-amount-box donor">
+            <div class="flow-amount">$2.00</div>
+            <div class="flow-desc">Monthly donation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" id="flow-step-2">
+        <div class="flow-step-label">Step 2: Processing Fee Added</div>
+        <div class="flow-step-content">
+          <div class="flow-amount-box donor">
+            <div class="flow-amount">$2.00</div>
+            <div class="flow-desc">Donation</div>
+          </div>
+          <div class="flow-arrow">+</div>
+          <div class="flow-amount-box fee">
+            <div class="flow-amount">$0.50</div>
+            <div class="flow-desc">Fees (paid by donor)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" id="flow-step-3">
+        <div class="flow-step-label">Step 3: You Receive</div>
+        <div class="flow-step-content">
+          <div class="flow-amount-box org">
+            <div class="flow-amount">$2.00</div>
+            <div class="flow-desc">Full donation to you</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="org-callout-box">
+      <div class="org-callout-title">You get 100%</div>
+      <div class="org-callout-text">We never take from your donations. Our profit comes from the processing fees covered by donors.</div>
+    </div>
+
+    <div class="org-model-actions">
+      <button class="btn-primary" onclick="continueToWizard()">I Understand, Continue</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WIZARD STEP 1: About Your Org ═══════════════ -->
+  <div class="screen wizard-form-screen" id="screen-wizard-1">
+    <div class="wizard-progress-bar">
+      <div class="wizard-progress-steps">
+        <div class="wizard-step-dot active">1</div>
+        <div class="wizard-step-dot">2</div>
+        <div class="wizard-step-dot">3</div>
+        <div class="wizard-step-dot">4</div>
+        <div class="wizard-step-dot">5</div>
+        <div class="wizard-step-dot">6</div>
+      </div>
+      <div class="wizard-progress-label">About Your Organization</div>
+    </div>
+
+    <div class="wizard-form-body">
+      <div class="wizard-section-title">Tell us about your organization</div>
+      <div class="wizard-section-desc">This information helps donors find and connect with your mission.</div>
+
+      <div class="form-group">
+        <label class="form-label">Organization Name <span class="required">*</span></label>
+        <input type="text" class="form-input" id="org-name" placeholder="Enter your organization name">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Cause Category <span class="required">*</span></label>
+        <div class="form-category-pills" id="org-category-pills">
+          <div class="form-category-pill" onclick="selectCategory(this, 'Education')">Education</div>
+          <div class="form-category-pill" onclick="selectCategory(this, 'Environment')">Environment</div>
+          <div class="form-category-pill" onclick="selectCategory(this, 'Health')">Health</div>
+          <div class="form-category-pill" onclick="selectCategory(this, 'Animals')">Animals</div>
+          <div class="form-category-pill" onclick="selectCategory(this, 'Arts')">Arts</div>
+          <div class="form-category-pill" onclick="selectCategory(this, 'Community')">Community</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Country / Location <span class="required">*</span></label>
+        <input type="text" class="form-input" id="org-country" placeholder="e.g., United States">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Year Founded <span class="required">*</span></label>
+        <input type="number" class="form-input" id="org-founded" placeholder="e.g., 2010">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email <span class="required">*</span></label>
+        <input type="email" class="form-input" id="org-email" placeholder="contact@yourorg.org">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Website</label>
+        <input type="url" class="form-input" id="org-website" placeholder="https://yourorg.org">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input type="tel" class="form-input" id="org-phone" placeholder="(555) 123-4567">
+      </div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="btn-secondary" onclick="goBackOnboarding()">Back</button>
+      <button class="btn-primary" onclick="nextWizardStep(2)">Next</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WIZARD STEP 2: Mission & Story ═══════════════ -->
+  <div class="screen wizard-form-screen" id="screen-wizard-2">
+    <div class="wizard-progress-bar">
+      <div class="wizard-progress-steps">
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot active">2</div>
+        <div class="wizard-step-dot">3</div>
+        <div class="wizard-step-dot">4</div>
+        <div class="wizard-step-dot">5</div>
+        <div class="wizard-step-dot">6</div>
+      </div>
+      <div class="wizard-progress-label">Mission & Story</div>
+    </div>
+
+    <div class="wizard-form-body">
+      <div class="wizard-section-title">Share your mission</div>
+      <div class="wizard-section-desc">Tell donors why your work matters and the impact you're making.</div>
+
+      <div class="form-group">
+        <label class="form-label">Mission Statement <span class="required">*</span></label>
+        <textarea class="form-textarea" id="org-mission" placeholder="Describe your organization's mission in a compelling way..."></textarea>
+        <div class="form-hint">This will be featured prominently on your profile. Keep it concise and inspiring.</div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Beneficiary Stories</label>
+        <div class="form-hint" style="margin-bottom:12px;">Share 1-3 stories from people your organization has helped. These personal stories help donors connect emotionally.</div>
+        <div class="story-card-list" id="story-card-list">
+          <div class="story-card-input">
+            <div class="story-card-header-row">
+              <div class="story-photo-placeholder">📷</div>
+              <input type="text" class="form-input" placeholder="Person's name" style="margin-bottom:0;">
+              <button class="story-card-remove" onclick="removeStoryCard(this)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+              </button>
+            </div>
+            <input type="text" class="form-input" placeholder="Location" style="margin-bottom:10px;">
+            <textarea class="form-textarea" placeholder="Their story or quote..." style="min-height:80px;"></textarea>
+          </div>
+        </div>
+        <button class="add-story-btn" onclick="addStoryCard()">+ Add Another Story</button>
+      </div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="btn-secondary" onclick="previousWizardStep(1)">Back</button>
+      <button class="btn-primary" onclick="nextWizardStep(3)">Next</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WIZARD STEP 3: Media & Branding ═══════════════ -->
+  <div class="screen wizard-form-screen" id="screen-wizard-3">
+    <div class="wizard-progress-bar">
+      <div class="wizard-progress-steps">
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot active">3</div>
+        <div class="wizard-step-dot">4</div>
+        <div class="wizard-step-dot">5</div>
+        <div class="wizard-step-dot">6</div>
+      </div>
+      <div class="wizard-progress-label">Media & Branding</div>
+    </div>
+
+    <div class="wizard-form-body">
+      <div class="wizard-section-title">Add your visuals</div>
+      <div class="wizard-section-desc">Help your organization stand out with photos, logos, and video.</div>
+
+      <div class="form-group">
+        <label class="form-label">Logo <span class="required">*</span></label>
+        <div class="upload-area" onclick="alert('File upload would open here in a real app')">
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-label">Click to upload logo</div>
+          <div class="upload-hint">PNG, JPG or SVG • Max 2MB</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Hero Photos <span class="required">*</span></label>
+        <div class="form-hint" style="margin-bottom:10px;">Upload 3-5 high-quality photos that showcase your work.</div>
+        <div class="upload-area gallery-upload-area" onclick="alert('Gallery upload would open here in a real app')">
+          <div class="upload-icon">🖼️</div>
+          <div class="upload-label">Click to upload photos</div>
+          <div class="upload-hint">PNG or JPG • 3-5 images • Max 5MB each</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Video Spotlight URL</label>
+        <input type="url" class="form-input" id="org-video" placeholder="https://youtube.com/watch?v=...">
+        <div class="form-hint">YouTube or Vimeo link to a video about your organization</div>
+      </div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="btn-secondary" onclick="previousWizardStep(2)">Back</button>
+      <button class="btn-primary" onclick="nextWizardStep(4)">Next</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WIZARD STEP 4: Impact & Verification ═══════════════ -->
+  <div class="screen wizard-form-screen" id="screen-wizard-4">
+    <div class="wizard-progress-bar">
+      <div class="wizard-progress-steps">
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot active">4</div>
+        <div class="wizard-step-dot">5</div>
+        <div class="wizard-step-dot">6</div>
+      </div>
+      <div class="wizard-progress-label">Impact & Verification</div>
+    </div>
+
+    <div class="wizard-form-body">
+      <div class="wizard-section-title">Show your impact</div>
+      <div class="wizard-section-desc">Share measurable outcomes and verify your nonprofit status.</div>
+
+      <div class="form-group">
+        <label class="form-label">Impact Metrics</label>
+        <div class="form-hint" style="margin-bottom:12px;">Add 3-5 key metrics that show your organization's impact (e.g., "Trees Planted: 50,000")</div>
+        <div class="metrics-list" id="metrics-list">
+          <div class="metric-row">
+            <input type="text" class="form-input" placeholder="Metric name (e.g., Trees Planted)">
+            <input type="text" class="form-input" placeholder="Value (e.g., 50,000)">
+            <button class="metric-remove-btn" onclick="removeMetric(this)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
+        </div>
+        <button class="add-story-btn" onclick="addMetric()">+ Add Metric</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tax ID / EIN <span class="required">*</span></label>
+        <input type="text" class="form-input" id="org-tax-id" placeholder="e.g., 12-3456789">
+        <div class="form-hint">Your nonprofit's tax identification number (EIN for US organizations)</div>
+      </div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="btn-secondary" onclick="previousWizardStep(3)">Back</button>
+      <button class="btn-primary" onclick="nextWizardStep(5)">Next</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WIZARD STEP 5: Payout Setup ═══════════════ -->
+  <div class="screen wizard-form-screen" id="screen-wizard-5">
+    <div class="wizard-progress-bar">
+      <div class="wizard-progress-steps">
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot active">5</div>
+        <div class="wizard-step-dot">6</div>
+      </div>
+      <div class="wizard-progress-label">Payout Setup</div>
+    </div>
+
+    <div class="wizard-form-body">
+      <div class="wizard-section-title">Set up payouts</div>
+      <div class="wizard-section-desc">Enter your bank details so we can send you donations monthly.</div>
+
+      <div class="form-group">
+        <label class="form-label">Bank Name <span class="required">*</span></label>
+        <input type="text" class="form-input" id="bank-name" placeholder="e.g., First National Bank">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Account Holder Name <span class="required">*</span></label>
+        <input type="text" class="form-input" id="account-holder" placeholder="Legal name on the account">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Routing Number <span class="required">*</span></label>
+        <input type="text" class="form-input" id="routing-number" placeholder="9-digit routing number">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Account Number <span class="required">*</span></label>
+        <input type="text" class="form-input" id="account-number" placeholder="Your account number">
+        <div class="form-hint">Payouts are processed on the 15th of each month. Your information is encrypted and secure.</div>
+      </div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="btn-secondary" onclick="previousWizardStep(4)">Back</button>
+      <button class="btn-primary" onclick="nextWizardStep(6)">Next</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ WIZARD STEP 6: Preview & Submit ═══════════════ -->
+  <div class="screen preview-screen" id="screen-wizard-6">
+    <div class="wizard-progress-bar">
+      <div class="wizard-progress-steps">
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot completed">✓</div>
+        <div class="wizard-step-dot active">6</div>
+      </div>
+      <div class="wizard-progress-label">Preview & Submit</div>
+    </div>
+
+    <div class="preview-header">
+      <div class="preview-title">Preview Your Profile</div>
+      <div class="preview-subtitle">This is how donors will see your organization</div>
+      <button class="preview-edit-btn" onclick="previousWizardStep(1)">✏️ Edit Details</button>
+    </div>
+
+    <div class="preview-body" id="preview-body">
+      <!-- Preview content will be dynamically rendered here, reusing org-detail-modal styles -->
+      <div style="padding: 20px 24px; background: var(--card-bg); margin: 0 24px 16px; border-radius: var(--radius); box-shadow: var(--shadow-card);">
+        <div style="font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 6px; color: var(--ink);" id="preview-org-name">Your Organization Name</div>
+        <div style="font-size: 13px; color: var(--accent); font-weight: 600; margin-bottom: 12px;" id="preview-org-cause">Category</div>
+        <div style="font-size: 13px; color: var(--ink-soft); line-height: 1.6;" id="preview-org-mission">Your mission statement will appear here...</div>
+      </div>
+    </div>
+
+    <div class="wizard-actions">
+      <button class="btn-secondary" onclick="previousWizardStep(5)">Back</button>
+      <button class="btn-primary" onclick="submitOrgOnboarding()">Submit for Review</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SUCCESS OVERLAY ═══════════════ -->
+  <div class="success-overlay" id="success-overlay">
+    <div class="success-content">
+      <div class="success-emoji">🎉</div>
+      <div class="success-title">You're all set!</div>
+      <div class="success-message">Your organization is under review. We'll notify you within 48 hours once your profile is approved and live on 50k2.</div>
+      <button class="btn-primary" onclick="closeSuccessAndReturn()">Back to Home</button>
     </div>
   </div>
 
@@ -2415,6 +3477,173 @@ document.querySelectorAll('.cat-pill').forEach(pill => {
     pill.classList.add('active');
   });
 });
+
+// ═══════════════════════════════════════════════════════
+// ORG ONBOARDING FUNCTIONS
+// ═══════════════════════════════════════════════════════
+
+let orgOnboardingData = {
+  category: '',
+  stories: [],
+  metrics: []
+};
+
+let onboardingHistory = [];
+
+// ─── Navigation ───
+function startOrgOnboarding() {
+  onboardingHistory = ['org-landing'];
+  switchScreen('org-model');
+  setTimeout(() => animateFlowSteps(), 300);
+}
+
+function goBackOnboarding() {
+  if (onboardingHistory.length > 0) {
+    const previous = onboardingHistory.pop();
+    switchScreen(previous);
+  } else {
+    switchScreen('profile');
+  }
+}
+
+function continueToWizard() {
+  onboardingHistory.push('org-model');
+  switchScreen('wizard-1');
+}
+
+function nextWizardStep(step) {
+  onboardingHistory.push(`wizard-${step - 1}`);
+  switchScreen(`wizard-${step}`);
+  
+  if (step === 6) {
+    renderPreview();
+  }
+}
+
+function previousWizardStep(step) {
+  if (onboardingHistory.length > 0) {
+    onboardingHistory.pop();
+  }
+  switchScreen(`wizard-${step}`);
+}
+
+// ─── Flow Animation ───
+function animateFlowSteps() {
+  const steps = ['flow-step-1', 'flow-step-2', 'flow-step-3'];
+  steps.forEach((stepId, index) => {
+    setTimeout(() => {
+      document.getElementById(stepId).classList.add('visible');
+    }, index * 600);
+  });
+}
+
+// ─── Category Selection ───
+function selectCategory(el, category) {
+  document.querySelectorAll('.form-category-pill').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  orgOnboardingData.category = category;
+}
+
+// ─── Story Cards ───
+function addStoryCard() {
+  const list = document.getElementById('story-card-list');
+  if (list.children.length >= 3) {
+    alert('You can add up to 3 stories.');
+    return;
+  }
+  
+  const card = document.createElement('div');
+  card.className = 'story-card-input';
+  card.innerHTML = `
+    <div class="story-card-header-row">
+      <div class="story-photo-placeholder">📷</div>
+      <input type="text" class="form-input" placeholder="Person's name" style="margin-bottom:0;">
+      <button class="story-card-remove" onclick="removeStoryCard(this)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <input type="text" class="form-input" placeholder="Location" style="margin-bottom:10px;">
+    <textarea class="form-textarea" placeholder="Their story or quote..." style="min-height:80px;"></textarea>
+  `;
+  list.appendChild(card);
+}
+
+function removeStoryCard(btn) {
+  const card = btn.closest('.story-card-input');
+  if (document.querySelectorAll('.story-card-input').length > 1) {
+    card.remove();
+  } else {
+    alert('You must have at least one story card.');
+  }
+}
+
+// ─── Impact Metrics ───
+function addMetric() {
+  const list = document.getElementById('metrics-list');
+  if (list.children.length >= 5) {
+    alert('You can add up to 5 metrics.');
+    return;
+  }
+  
+  const row = document.createElement('div');
+  row.className = 'metric-row';
+  row.innerHTML = `
+    <input type="text" class="form-input" placeholder="Metric name (e.g., Trees Planted)">
+    <input type="text" class="form-input" placeholder="Value (e.g., 50,000)">
+    <button class="metric-remove-btn" onclick="removeMetric(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  `;
+  list.appendChild(row);
+}
+
+function removeMetric(btn) {
+  const row = btn.closest('.metric-row');
+  if (document.querySelectorAll('.metric-row').length > 1) {
+    row.remove();
+  } else {
+    alert('You must have at least one metric.');
+  }
+}
+
+// ─── Preview Rendering ───
+function renderPreview() {
+  const orgName = document.getElementById('org-name').value || 'Your Organization Name';
+  const orgCategory = orgOnboardingData.category || 'Category';
+  const orgMission = document.getElementById('org-mission').value || 'Your mission statement will appear here...';
+  
+  document.getElementById('preview-org-name').textContent = orgName;
+  document.getElementById('preview-org-cause').textContent = orgCategory;
+  document.getElementById('preview-org-mission').textContent = orgMission;
+}
+
+// ─── Submit ───
+function submitOrgOnboarding() {
+  document.getElementById('success-overlay').classList.add('show');
+  spawnSuccessConfetti();
+}
+
+function spawnSuccessConfetti() {
+  const overlay = document.getElementById('success-overlay');
+  const colors = ['#E86B4A', '#3AAF6B', '#D4A843', '#7C3AED', '#EC4899', '#2B7A9E'];
+  for (let i = 0; i < 40; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.top = '30%';
+    confetti.style.animation = `confettiFall ${0.8 + Math.random() * 1.2}s ease-out forwards`;
+    confetti.style.animationDelay = Math.random() * 0.3 + 's';
+    overlay.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 2500);
+  }
+}
+
+function closeSuccessAndReturn() {
+  document.getElementById('success-overlay').classList.remove('show');
+  onboardingHistory = [];
+  switchScreen('discover');
+}
 
 // ─── Init ───
 renderCards();
